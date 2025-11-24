@@ -129,7 +129,7 @@ const Navbar = () => {
 
             {dropdown && (
   <div className="absolute right-0 mt-3 w-44 bg-white shadow-lg rounded-xl p-3 z-[9999]">
-
+ 
                 {/* USER NAME + BADGE */}
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-medium capitalize text-gray-800">
