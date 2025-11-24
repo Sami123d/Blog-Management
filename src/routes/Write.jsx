@@ -33,7 +33,6 @@ const getToken = localStorage.getItem("accessToken");
 
   const navigate = useNavigate();
 
-  const { accessToken } = useContext(AuthContext);
 
  const mutation = useMutation({
   mutationFn: async (newPost) => {
@@ -42,7 +41,7 @@ const getToken = localStorage.getItem("accessToken");
       newPost,
       {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${getToken}`,
           "Content-Type": "application/json",
         },
       }
@@ -68,7 +67,6 @@ const handleSubmit = (e) => {
 
   const title = e.target.title.value.trim();
   const category = e.target.category.value;
-  const desc = e.target.desc.value.trim();
 
   // Validations
   if (!title) {
@@ -86,10 +84,7 @@ const handleSubmit = (e) => {
     return;
   }
 
-  if (!desc) {
-    toast.error("Short description is required");
-    return;
-  }
+
 
   if (!category) {
     toast.error("Category is required");

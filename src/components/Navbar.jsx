@@ -77,7 +77,7 @@ const Navbar = () => {
           }`}
         >
           <Link to="/" onClick={() => setOpen(false)}>Home</Link>
-          <Link to="/posts?sort=trending" onClick={() => setOpen(false)}>Trending</Link>
+          <Link to="/write" onClick={() => setOpen(false)}>Add Post</Link>
           <Link to="/posts?sort=popular" onClick={() => setOpen(false)}>Most Popular</Link>
           <Link to="/" onClick={() => setOpen(false)}>About</Link>
 
@@ -104,7 +104,7 @@ const Navbar = () => {
       <div className="hidden md:flex items-center gap-8 xl:gap-12 font-medium">
 
         <Link to="/">Home</Link>
-        <Link to="/posts?sort=trending">Trending</Link>
+        <Link to="/write">Add Post</Link>
         <Link to="/posts?sort=popular">Most Popular</Link>
         <Link to="/">About</Link>
 
@@ -128,7 +128,7 @@ const Navbar = () => {
             </div>
 
             {dropdown && (
-              <div className="absolute right-0 mt-3 w-44 bg-white shadow-lg rounded-xl p-3">
+  <div className="absolute right-0 mt-3 w-44 bg-white shadow-lg rounded-xl p-3 z-[9999]">
 
                 {/* USER NAME + BADGE */}
                 <div className="flex items-center justify-between">
