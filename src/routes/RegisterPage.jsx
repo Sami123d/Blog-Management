@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const RegisterPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -10,6 +12,7 @@ const RegisterPage = () => {
   } = useForm();
 
   const submitHandler = async (formData) => {
+    setIsLoading(true);
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
         method: "POST",
@@ -24,9 +27,11 @@ const RegisterPage = () => {
         setTimeout(() => (window.location.href = "/login"), 1200);
       } else {
         toast.error(data.message || "Registration failed");
+        setIsLoading(false);
       }
     } catch (err) {
       toast.error("Server error. Try again!");
+      setIsLoading(false);
     }
   };
 
@@ -56,10 +61,27 @@ const RegisterPage = () => {
           type="email"
           placeholder="Email"
           className="w-full mb-4 px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-400"
-          {...register("email", { required: "Email is required" })}
+          {...register("email", { 
+            required: "Email is required",
+            pattern: {
+              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+              message: "Invalid email format"
+            }
+          })}
         />
         {errors.email && (
           <p className="text-red-600 text-sm mb-3">{errors.email.message}</p>
+        )}
+
+        {/* Phone Number */}
+        <input
+          type="tel"
+          placeholder="Phone Number"
+          className="w-full mb-4 px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-400"
+          {...register("phone", { required: "Phone number is required" })}
+        />
+        {errors.phone && (
+          <p className="text-red-600 text-sm mb-3">{errors.phone.message}</p>
         )}
 
         {/* Password */}
@@ -67,26 +89,35 @@ const RegisterPage = () => {
           type="password"
           placeholder="Password"
           className="w-full mb-4 px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-400"
- {...register("password", {
-    required: "Password is required",
-    minLength: {
-      value: 8,
-      message: "Password must be at least 8 characters",
-    },
-    pattern: {
-      value: /^[A-Za-z0-9]+$/,
-      message: "Password can only contain letters and numbers",
-    },
-  })}        />
+          {...register("password", {
+            required: "Password is required",
+            minLength: {
+              value: 6,
+              message: "Password must be at least 6 characters",
+            },
+          })}
+        />
         {errors.password && (
           <p className="text-red-600 text-sm mb-3">{errors.password.message}</p>
         )}
 
         <button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition"
+          disabled={isLoading}
+          className={`w-full font-medium py-2 rounded-lg transition flex items-center justify-center gap-2 ${
+            isLoading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700"
+          } text-white`}
         >
-          Register
+          {isLoading ? (
+            <>
+              <span className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+              Registering...
+            </>
+          ) : (
+            "Register"
+          )}
         </button>
 
         <p className="text-center text-gray-600 mt-4">

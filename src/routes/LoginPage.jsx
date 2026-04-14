@@ -1,10 +1,11 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const LoginPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const { saveAuth } = useContext(AuthContext);
 
   const {
@@ -14,6 +15,7 @@ const LoginPage = () => {
   } = useForm();
 
   const submitHandler = async (data) => {
+    setIsLoading(true);
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
         method: "POST",
@@ -31,9 +33,11 @@ const LoginPage = () => {
         setTimeout(() => (window.location.href = "/"), 1200);
       } else {
         toast.error(result.message || "Login failed");
+        setIsLoading(false);
       }
     } catch (err) {
       toast.error("Server error. Try again!");
+      setIsLoading(false);
     }
   };
 
@@ -71,9 +75,21 @@ const LoginPage = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition"
+          disabled={isLoading}
+          className={`w-full font-medium py-2 rounded-lg transition flex items-center justify-center gap-2 ${
+            isLoading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700"
+          } text-white`}
         >
-          Login
+          {isLoading ? (
+            <>
+              <span className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+              Logging in...
+            </>
+          ) : (
+            "Login"
+          )}
         </button>
 
         <p className="text-center text-gray-600 mt-4">

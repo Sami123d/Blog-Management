@@ -15,17 +15,18 @@ const getToken = localStorage.getItem("accessToken");
 
   const queryClient = useQueryClient();
 
-  const mutation = useMutation({
+  const deleteCommentMutation = useMutation({
     mutationFn: async () => {
 const token = localStorage.getItem("accessToken");
       return axios.delete(
-        `${import.meta.env.VITE_API_URL}/comments/${comment._id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+  `${import.meta.env.VITE_API_URL}/posts/comments/${comment._id}`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
+
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["comments", postId] });
@@ -54,10 +55,10 @@ const token = localStorage.getItem("accessToken");
           (comment.author?._id === user?.id || role === "admin") && (
             <span
               className="text-xs text-red-300 hover:text-red-500 cursor-pointer"
-              onClick={() => mutation.mutate()}
+onClick={() => deleteCommentMutation.mutate()}
             >
               delete
-              {mutation.isPending && <span>(in progress)</span>}
+{deleteCommentMutation.isLoading && <span> (in progress)</span>}
             </span>
           )}
       </div>
