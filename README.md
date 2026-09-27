@@ -12,7 +12,7 @@ Backend: [Sami123d/Blog-Management-API](https://github.com/Sami123d/Blog-Managem
 
 Learning project. The UI layout follows a React blog tutorial: commented-out Clerk auth checks in `Write.jsx` and calls to endpoints like `/users/save` and `/posts/feature` are left over from it. I replaced the tutorial's auth with my own JWT backend.
 
-Deployed on Vercel at https://blog-management-nine-neon.vercel.app. Only the login page renders, because every other page needs a working API login and the API deployment was failing (see the API repo's README).
+Deployed on Vercel at https://blog-management-nine-neon.vercel.app. The login and register pages render, but signing in doesn't work yet: the API deployment is reachable but has no working database connection (its `/api` routes return 503). Every other page sits behind login.
 
 ## Features
 
